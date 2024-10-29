@@ -42,9 +42,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ck.pruebatecnica.R
-import com.ck.pruebatecnica.presentation.usescases.home.TrendingCharacterItem
+import com.ck.pruebatecnica.presentation.components.CharacterItem
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -53,7 +54,7 @@ fun SearchScreen(
     searchState: StateFlow<SearchViewState>,
     viewModel: SearchViewModel,
 ) {
-    val state by searchState.collectAsState()
+    val state by searchState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
     Box(
@@ -75,12 +76,12 @@ fun SearchScreen(
 
             // Lista de personajes
             LazyColumn(
-                state = listState,
+                //state = listState,
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(state.characterList, key = { character -> character.id }) { character ->
-                    TrendingCharacterItem(character)
+                    CharacterItem(character)
                 }
             }
         }

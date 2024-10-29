@@ -68,7 +68,7 @@ fun MyApp(
     val stateHome = homeViewModel.state
     val stateSearch = searchViewModel.state
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route
+    val currentRoute = currentBackStackEntry?.destination?.route ?: "fastSearch"
 
     // Usa un Column para organizar el contenido
     Column(modifier = Modifier.fillMaxSize()) {
@@ -101,8 +101,8 @@ fun MyApp(
             }
         }
 
-        // Muestra el BottomNavigation solo si no estás en la fastScreen
-        if (currentRoute != "fastScreen") {
+        // Muestra el BottomNavigation solo si no estás en la fastSearch
+        if (currentRoute != "fastSearch") {
             BottomNavigationComponent(navController, currentRoute)
         }
     }
@@ -136,11 +136,13 @@ fun BottomNavigationComponent(navController: NavHostController,currentRoute:Stri
                 selected = currentRoute == screen.route,
                 onClick = {
                     Log.w("mainActivity","navigate to ${screen.route}")
-                    navController.navigate(screen.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                        popUpTo(navController.graph.startDestinationId) { // Regresar al destino inicial si es necesario
-                            saveState = true
+                    if(!currentRoute.equals(screen.route)){
+                        navController.navigate(screen.route) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(navController.graph.startDestinationId) { // Regresar al destino inicial si es necesario
+                                saveState = true
+                            }
                         }
                     }
                 }

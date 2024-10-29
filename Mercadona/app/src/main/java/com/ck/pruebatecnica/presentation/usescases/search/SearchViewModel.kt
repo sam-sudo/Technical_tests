@@ -94,11 +94,11 @@ class SearchViewModel @Inject constructor(
 
 
     fun updateTextSearch(text: String){
-        loadCharacterByFilter(text)
         _state.update {
             it.copy(
                 textToSearch = text
             )
         }
+        loadCharacterByFilter(text)
     }
 }
