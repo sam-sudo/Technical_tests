@@ -3,6 +3,7 @@ package com.ck.pruebatecnica.di
 import android.app.Application
 import com.ck.pruebatecnica.data.local.AppDatabase
 import com.ck.pruebatecnica.data.local.dao.CharacterDao
+import com.ck.pruebatecnica.data.local.dao.EpisodeDao
 import com.ck.pruebatecnica.data.local.dao.LocationDao
 import com.ck.pruebatecnica.data.local.dao.OriginDao
 import dagger.Module
@@ -36,5 +37,10 @@ object DatabaseModule {
     @Singleton
     fun provideLocationDao(database: AppDatabase): OriginDao {
         return database.origenDao()
+    }
+    @Provides
+    @Singleton
+    fun provideEpisodeDao(database: AppDatabase): EpisodeDao {
+        return database.episodeDao()
     }
 }

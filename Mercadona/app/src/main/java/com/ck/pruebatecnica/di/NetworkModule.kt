@@ -1,6 +1,7 @@
 package com.ck.pruebatecnica.di
 
 import com.ck.pruebatecnica.data.local.dao.CharacterDao
+import com.ck.pruebatecnica.data.local.dao.EpisodeDao
 import com.ck.pruebatecnica.data.local.dao.LocationDao
 import com.ck.pruebatecnica.data.local.dao.OriginDao
 import com.ck.pruebatecnica.data.repository.remote.rickMortyApi.RemoteCharacterDatasource
@@ -39,13 +40,15 @@ object NetworkModule {
         characterService: CharacterService,
         characterDao: CharacterDao,
         locationDao: LocationDao,
-        origenDao: OriginDao
+        origenDao: OriginDao,
+        episodeDao: EpisodeDao
     ): RemoteCharacterDatasource {
         return RemoteCharacterDatasource(
             characterService,
             characterDao,
             locationDao,
-            origenDao
+            origenDao,
+            episodeDao
         )
     }
 

@@ -22,8 +22,8 @@ interface LocationDao {
     @Delete
     fun deleteLocation(location: LocationEntity)
 
-    @Query("SELECT * FROM locations WHERE locationId = :id")
-    fun getLocationById(id: Long): LocationEntity?
+    @Query("SELECT * FROM locations WHERE characterId = :id")
+    fun getLocationByCharacterId(id: Long): LocationEntity?
 
     @Query("SELECT * FROM locations")
     fun getAllLocations(): List<LocationEntity>

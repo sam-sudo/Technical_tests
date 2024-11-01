@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f48988ec3e3cc1c67d7341dda4507aea",
+    "identityHash": "1d71b897db7433032ce4eaa35c6ec688",
     "entities": [
       {
         "tableName": "characters",
@@ -187,12 +187,50 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "episodes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeId` INTEGER PRIMARY KEY AUTOINCREMENT, `air_date` TEXT NOT NULL, `episode` TEXT NOT NULL, `characters` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "episodeId",
+            "columnName": "episodeId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airDate",
+            "columnName": "air_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeName",
+            "columnName": "episode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "characters",
+            "columnName": "characters",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "episodeId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f48988ec3e3cc1c67d7341dda4507aea')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d71b897db7433032ce4eaa35c6ec688')"
     ]
   }
 }

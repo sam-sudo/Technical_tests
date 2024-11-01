@@ -22,8 +22,8 @@ interface OriginDao {
     @Delete
     fun deleteOrigin(origin: OriginEntity)
 
-    @Query("SELECT * FROM origins WHERE originID = :id")
-    fun getOriginById(id: Long): OriginEntity?
+    @Query("SELECT * FROM origins WHERE characterId = :id")
+    fun getOriginByCharacterId(id: Long): OriginEntity?
 
     @Query("SELECT * FROM origins")
     fun getAllOrigins(): List<OriginEntity>

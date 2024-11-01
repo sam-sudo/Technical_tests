@@ -27,6 +27,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.ck.pruebatecnica.presentation.components.CharacterDetail
+import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItemViewModel
 import com.ck.pruebatecnica.presentation.usescases.fastSearchByTags.FastSearchByTagsScreen
 import com.ck.pruebatecnica.presentation.usescases.fastSearchByTags.FastSearchByTagsViewModel
 import com.ck.pruebatecnica.presentation.usescases.home.HomeScreen
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     private val fastSearchByTagsViewModel: FastSearchByTagsViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
+    private val characterItemViewModel: CharacterItemViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp(fastSearchByTagsViewModel,homeViewModel,searchViewModel)
+                    MyApp(fastSearchByTagsViewModel,homeViewModel,searchViewModel,characterItemViewModel)
                 }
             }
         }
@@ -61,7 +64,8 @@ class MainActivity : ComponentActivity() {
 fun MyApp(
     fastSearchByTagsViewModel: FastSearchByTagsViewModel,
     homeViewModel: HomeViewModel,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    characterItemViewModel: CharacterItemViewModel
 ) {
     val navController = rememberNavController()
     val stateFastSearchByTags = fastSearchByTagsViewModel.state
@@ -82,13 +86,22 @@ fun MyApp(
                         searchViewModel
                     )
             }
+            composable("characterDetail/{characterId}") { backStackEntry ->
+                val characterId = backStackEntry.arguments?.getString("characterId")?.toLongOrNull() ?: 0L
+                CharacterDetail(
+                    characterId = characterId,
+                    characterItemViewModel = characterItemViewModel
+                )
+            }
+
             navigation(startDestination = "home", route = "main") {
                 composable("home") {
                     // Usa un estado para determinar si la HomeScreen está lista
                     HomeScreen(
                         navController = navController,
                         homeState = stateHome,
-                        viewModel = homeViewModel
+                        viewModel = homeViewModel,
+                        characterItemViewModel = characterItemViewModel
                     )
                 }
                 composable("search") {

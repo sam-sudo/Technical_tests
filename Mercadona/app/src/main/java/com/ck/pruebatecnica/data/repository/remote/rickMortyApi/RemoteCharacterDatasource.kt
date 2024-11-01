@@ -2,6 +2,7 @@ package com.ck.pruebatecnica.data.repository.remote.rickMortyApi
 
 import androidx.room.Transaction
 import com.ck.pruebatecnica.data.local.dao.CharacterDao
+import com.ck.pruebatecnica.data.local.dao.EpisodeDao
 import com.ck.pruebatecnica.data.local.dao.LocationDao
 import com.ck.pruebatecnica.data.local.dao.OriginDao
 import com.ck.pruebatecnica.data.mapper.toDomain
@@ -18,7 +19,8 @@ class RemoteCharacterDatasource @Inject constructor(
     private val rickMortyService: CharacterService,
     private val characterDao: CharacterDao,
     private val locationDao: LocationDao,
-    private val origenDao: OriginDao
+    private val origenDao: OriginDao,
+    private val episodeDao: EpisodeDao,
 ) : CharacterRepository {
 
     override suspend fun getCharacterByPage(page: Int): List<Character> {

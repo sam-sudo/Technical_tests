@@ -1,9 +1,11 @@
 package com.ck.pruebatecnica.data.mapper
 
 import com.ck.pruebatecnica.data.local.entities.CharacterEntity
+import com.ck.pruebatecnica.data.local.entities.EpisodeEntity
 import com.ck.pruebatecnica.data.local.entities.LocationEntity
 import com.ck.pruebatecnica.data.local.entities.OriginEntity
 import com.ck.pruebatecnica.data.model.CharacterDto
+import com.ck.pruebatecnica.data.model.Episode
 import com.ck.pruebatecnica.data.model.LocationDto
 import com.ck.pruebatecnica.data.model.OriginDto
 import com.ck.pruebatecnica.domain.model.Character
@@ -97,3 +99,11 @@ fun OriginDto.toDomain(): Origin {
         url = this.url
     )
 }
+
+fun EpisodeEntity.toDomain(): Episode {
+    return Episode(
+        id = this.episodeId!!,
+        episodeName = this.episodeName
+    )
+}
+

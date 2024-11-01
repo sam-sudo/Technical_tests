@@ -1,5 +1,7 @@
 package com.ck.pruebatecnica.domain.model
 
+import com.ck.pruebatecnica.data.model.Episode
+
 data class Character(
     val id: Long,
     val name: String,
