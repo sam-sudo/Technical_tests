@@ -8,6 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 
+val typeColors = mapOf(
+    "Status" to Color(0xFFFFA07A), // Light Salmon
+    "Species" to Color(0xFF98FB98), // Pale Green
+    "Type" to Color(0xFFADD8E6), // Light Blue
+    "Gender" to Color(0xFFFFE4B5), // Light Goldenrod Yellow
+    "Origin" to Color(0xFFB2FFFF), // Light Cyan
+    "Location" to Color(0xFFFFB6C1) // Light Pink
+)
+
 private val LightColors = lightColorScheme(
     primary = Color(0xFF3A1F1A),
     onPrimary = Color.White,

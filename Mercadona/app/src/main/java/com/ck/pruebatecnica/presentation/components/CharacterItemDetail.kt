@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -67,66 +69,100 @@ fun CharacterDetail(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (character != null) {
-            // Imagen del personaje
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(character?.image)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "Character image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(id = R.drawable.image_error)
-            )
+            Box {
+                // Imagen del personaje
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(character?.image)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Character image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(400.dp)
+                    ,
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.image_error)
+                )
 
+                // Degradado que se mezcla con el fondo
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    MaterialTheme.colorScheme.background
+                                ),
+                                startY = 500f,
+                                endY = 1000f // Este valor puede ajustarse según la altura de la imagen
+                            )
+                        )
+                )
+            }
+
+            // Contenido de información del personaje
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .offset(y = -80.dp), // Desplaza hacia arriba para que se mezcle con el degradado
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                // Información del personaje
                 Text(
                     text = character?.name ?: "Unknown",
                     style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black // Asegúrate de que el texto sea legible sobre el degradado
                 )
+
+                Spacer(Modifier.height(0.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .background(MaterialTheme.colorScheme.background)
+                    ,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    character?.let { char ->
+                        // Verifica si la propiedad no está vacía antes de mostrar el Card
+                        if (!char.location?.name.isNullOrEmpty()) {
+                            InfoLabelCard("Location", char.location?.name.toString(), "Location")
+                        }
+                        if (!char.status.isNullOrEmpty()) {
+                            InfoLabelCard("Status", char.status, "Status")
+                        }
+                        if (!char.species.isNullOrEmpty()) {
+                            InfoLabelCard("Species", char.species, "Species")
+                        }
+                        if (!char.type.isNullOrEmpty()) {
+                            InfoLabelCard("Type", char.type, "Type")
+                        }
+                        if (!char.gender.isNullOrEmpty()) {
+                            InfoLabelCard("Gender", char.gender, "Gender")
+                        }
+                        if (char.origin?.name?.isNotEmpty() == true) {
+                            InfoLabelCard("Origin", char.origin.name, "Origin")
+                        }
+                    }
+                }
                 Text(
-                    text = "Status: ${character?.status ?: "Unknown:"}",
-                    style = MaterialTheme.typography.bodyMedium
+                    text = "Episodes",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
-                Text(
-                    text = "Species: ${character?.species ?: "Unknown:"}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Type: ${character?.type ?: "Unknown:"}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Gender: ${character?.gender ?: "Unknown:"}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Origin: ${character?.origin?.name ?: "Unknown"}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Location: ${character?.location?.name ?: "Unknown"}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                if (character?.episodes != null){
-                    LazyRow() {
-                        items(character!!.episodes){ episode ->
-                            val episodeNumber = episode
+                if (character?.episodes != null) {
+                    LazyRow {
+                        items(character!!.episodes) { episode ->
                             Card(
                                 shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier
-                                    .padding(16.dp)
-                                    .height(100.dp)
+                                    .padding(8.dp)
+                                    .height(200.dp)
                                     .width(80.dp),
                                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
                             ) {
@@ -142,7 +178,6 @@ fun CharacterDetail(
                                     )
                                 }
                             }
-
                         }
                     }
                 }
@@ -161,4 +196,5 @@ fun characterItemDetail() {
     // Llama a CharacterDetail en la preview con datos de ejemplo
     CharacterDetail(characterId = 2L, characterItemViewModel = characterItemViewModel)
 }
+
 

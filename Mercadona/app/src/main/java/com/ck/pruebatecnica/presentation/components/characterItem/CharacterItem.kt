@@ -1,5 +1,6 @@
 package com.ck.pruebatecnica.presentation.components.characterItem
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -84,7 +85,10 @@ fun CharacterItem(
                     }
                 }
                 IconButton(
-                    onClick = { navController.navigate("characterDetail/${character.id}") }
+                    onClick = {
+                        Log.w("CharacterItem","character selected $character")
+                        navController.navigate("characterDetail/${character.id}")
+                    }
                 ) {
                     Icon(
                         painterResource(id = R.drawable.pencil),
