@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItem
 import com.ck.pruebatecnica.presentation.components.CharacterItemCard
+import com.ck.pruebatecnica.presentation.components.LoadingIndicator
 import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItemViewModel
 import com.ck.pruebatecnica.ui.theme.PruebaTecnicaTheme
 import kotlinx.coroutines.flow.StateFlow
@@ -102,7 +103,7 @@ fun HomeScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .wrapContentSize(Alignment.Center)
         ) {
-            CircularProgressIndicator()
+            LoadingIndicator()
         }
     }
 }

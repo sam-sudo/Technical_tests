@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.lottie.compose)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.palette.ktx)
     annotationProcessor(libs.androidx.room.compiler)
