@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItem
 import com.ck.pruebatecnica.presentation.components.CharacterItemCard
 import com.ck.pruebatecnica.presentation.components.LoadingIndicator
+import com.ck.pruebatecnica.presentation.components.LoadingNoDataIndicator
 import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItemViewModel
 import com.ck.pruebatecnica.ui.theme.PruebaTecnicaTheme
 import kotlinx.coroutines.flow.StateFlow
@@ -95,6 +96,30 @@ fun HomeScreen(
 
     }
 
+    if (state.characterList.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .systemBarsPadding()
+                .background(MaterialTheme.colorScheme.background)
+                .wrapContentSize(Alignment.Center)
+        ) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(onClick = {
+                    viewModel.refreshDatas()
+                }) {
+                    Text("Refresh")
+                }
+            }
+            LoadingNoDataIndicator()
+        }
+    }
     // Indicador de carga que se superpone
     if (state.isLoading) {
         Box(

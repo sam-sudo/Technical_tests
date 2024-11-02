@@ -73,14 +73,14 @@ class SearchViewModel @Inject constructor(
                 val characterFiltered = searchList.filter { it ->
                     // Filtrar por cualquier propiedad
                     val character = it.character
-                    list.any { filterString ->
-                                character.name.contains(filterString, ignoreCase = true) ||
-                                character.status.contains(filterString, ignoreCase = true) ||
-                                character.species.contains(filterString, ignoreCase = true) ||
-                                character.type.contains(filterString, ignoreCase = true) ||
-                                character.gender.contains(filterString, ignoreCase = true) ||
-                                (character.origin?.name?.contains(filterString, ignoreCase = true) ?: false) ||
-                                (character.location?.name?.contains(filterString, ignoreCase = true) ?: false)
+                    list.all { filterString ->
+                                character.name.toLowerCase() == filterString.toLowerCase() ||
+                                character.status.toLowerCase() == filterString.toLowerCase() ||
+                                character.species.toLowerCase() == filterString.toLowerCase() ||
+                                character.type.toLowerCase() == filterString.toLowerCase() ||
+                                character.gender.toLowerCase() == filterString.toLowerCase() ||
+                                character.origin?.name?.toLowerCase() == filterString.toLowerCase() ||
+                                character.location?.name?.toLowerCase() == filterString.toLowerCase()
                     }
                 }
 

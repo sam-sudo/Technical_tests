@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,6 +41,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ck.pruebatecnica.R
+import com.ck.pruebatecnica.presentation.components.LoadingNoDataIndicator
 import com.ck.pruebatecnica.presentation.components.characterItem.CharacterItem
 import kotlinx.coroutines.flow.StateFlow
 
@@ -55,12 +57,15 @@ fun SearchScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .statusBarsPadding()
             .systemBarsPadding()
     ) {
         // Contenido principal
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.
+            fillMaxSize()
+            .padding(16.dp)
+        ) {
             // Search Bar
             SearchBar(
                 searchText = state.textToSearch,
@@ -78,6 +83,19 @@ fun SearchScreen(
                 items(state.characterList, key = { character -> character.character.id }) { character ->
                     CharacterItem(character,navController)
                 }
+            }
+        }
+
+        if (state.characterList.size <= 0) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .systemBarsPadding()
+                    .background(MaterialTheme.colorScheme.background)
+                    .wrapContentSize(Alignment.Center)
+            ) {
+                LoadingNoDataIndicator()
             }
         }
 

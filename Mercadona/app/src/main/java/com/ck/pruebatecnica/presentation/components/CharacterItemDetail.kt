@@ -154,7 +154,8 @@ fun CharacterDetail(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(y = -80.dp), // Desplaza hacia arriba para que se mezcle con el degradado
+                        .padding(10.dp)
+                        .offset(y = -120.dp), // Desplaza hacia arriba para que se mezcle con el degradado
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
