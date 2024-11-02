@@ -1,5 +1,6 @@
 package com.ck.pruebatecnica.domain.model
 
+import com.ck.pruebatecnica.data.local.entities.EpisodeEntity
 import com.ck.pruebatecnica.data.model.Episode
 
 data class Character(
@@ -12,7 +13,7 @@ data class Character(
     val origin: Origin? = Origin(),
     val location: Location? = Location(),
     val image: String,
-    val episodes: List<String>
+    val episodes: List<Episode>
 )
 
 data class Location(

@@ -17,8 +17,13 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,6 +42,7 @@ import com.ck.pruebatecnica.presentation.usescases.search.SearchScreen
 import com.ck.pruebatecnica.presentation.usescases.search.SearchViewModel
 import com.ck.pruebatecnica.ui.theme.PruebaTecnicaTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -53,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp(fastSearchByTagsViewModel,homeViewModel,searchViewModel,characterItemViewModel)
+                    MyApp(fastSearchByTagsViewModel,homeViewModel,searchViewModel,characterItemViewModel, MaterialTheme.colorScheme.background)
                 }
             }
         }
@@ -65,7 +71,8 @@ fun MyApp(
     fastSearchByTagsViewModel: FastSearchByTagsViewModel,
     homeViewModel: HomeViewModel,
     searchViewModel: SearchViewModel,
-    characterItemViewModel: CharacterItemViewModel
+    characterItemViewModel: CharacterItemViewModel,
+    backgroundColor: Color
 ) {
     val navController = rememberNavController()
     val stateFastSearchByTags = fastSearchByTagsViewModel.state
@@ -73,6 +80,17 @@ fun MyApp(
     val stateSearch = searchViewModel.state
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route ?: "fastSearch"
+    val bottomNavColor = remember { MutableStateFlow(backgroundColor) }
+    val originalBottomNavColor = backgroundColor
+
+    LaunchedEffect(currentRoute) {
+        if (currentRoute != "characterDetail") {
+            bottomNavColor.value = originalBottomNavColor
+        }
+
+    }
+
+
 
     // Usa un Column para organizar el contenido
     Column(modifier = Modifier.fillMaxSize()) {
@@ -90,7 +108,8 @@ fun MyApp(
                 val characterId = backStackEntry.arguments?.getString("characterId")?.toLongOrNull() ?: 0L
                 CharacterDetail(
                     characterId = characterId,
-                    characterItemViewModel = characterItemViewModel
+                    characterItemViewModel = characterItemViewModel,
+                    bottomNavColor
                 )
             }
 
@@ -116,7 +135,7 @@ fun MyApp(
 
         // Muestra el BottomNavigation solo si no estás en la fastSearch
         if (currentRoute != "fastSearch") {
-            BottomNavigationComponent(navController, currentRoute)
+            BottomNavigationComponent(navController, currentRoute,bottomNavColor)
         }
     }
 }
@@ -131,11 +150,13 @@ sealed class BottomNavigationScreens(val route: String, val label: String, val i
 }
 
 @Composable
-fun BottomNavigationComponent(navController: NavHostController,currentRoute:String?) {
+fun BottomNavigationComponent(navController: NavHostController,currentRoute:String?, bottomNavColor: MutableStateFlow<androidx.compose.ui.graphics.Color>) {
+    val color by bottomNavColor.collectAsState() // Observa el color
+
     NavigationBar(
         modifier = Modifier
             .height(50.dp),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = color
     ) {
 
         BottomNavigationScreens.values.forEach { screen ->

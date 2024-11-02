@@ -9,16 +9,16 @@ import com.ck.pruebatecnica.data.local.entities.EpisodeEntity
 import com.ck.pruebatecnica.data.local.entities.LocationEntity
 import com.ck.pruebatecnica.data.local.entities.OriginEntity
 import com.ck.pruebatecnica.data.repository.local.LocalCharacterRepositoryDatasource
+import com.ck.pruebatecnica.data.repository.local.LocalEpisodeRepositoryDatasource
 
-fun LocalCharacterRepositoryDatasourceFake(): LocalCharacterRepositoryDatasource {
-    return localCharacterRepositoryDatasource
+fun LocalEpisodeRepositoryDatasourceFake(): LocalEpisodeRepositoryDatasource {
+    return localEpisodeRepositoryDatasource
 }
 
 // Instancia el repositorio y el ViewModel con los mocks
-val localCharacterRepositoryDatasource = LocalCharacterRepositoryDatasource(
+val localEpisodeRepositoryDatasource = LocalEpisodeRepositoryDatasource(
     characterDao = mockCharacterDao,
     locationDao = mockLocationDao,
     originDao = mockOriginDao,
-    episodeDao = mockEpisodeDao,
-    characterEpisodeDao = mockCharacterWithEpisodeDao
+    episodeDao = mockEpisodeDao
 )

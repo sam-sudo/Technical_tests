@@ -1,16 +1,19 @@
 package com.ck.pruebatecnica.data.local.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "episodes")
 data class EpisodeEntity(
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
     val episodeId: Long? = null,
-    @ColumnInfo(name = "air_date")
+    @SerializedName("air_date")
     val airDate: String,
-    @ColumnInfo(name = "episode")
-    val episodeName: String,
-    val characters: List<String>
+    @SerializedName("episode")
+    val episode: String,
+    @SerializedName("name")
+    val name: String, // Agregar esta propiedad para capturar el nombre del episodio
 )
+

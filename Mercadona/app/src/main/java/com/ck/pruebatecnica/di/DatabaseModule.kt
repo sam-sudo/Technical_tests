@@ -6,6 +6,7 @@ import com.ck.pruebatecnica.data.local.dao.CharacterDao
 import com.ck.pruebatecnica.data.local.dao.EpisodeDao
 import com.ck.pruebatecnica.data.local.dao.LocationDao
 import com.ck.pruebatecnica.data.local.dao.OriginDao
+import com.ck.pruebatecnica.data.local.dao.crossRef.CharacterEpisodeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,9 +39,16 @@ object DatabaseModule {
     fun provideLocationDao(database: AppDatabase): OriginDao {
         return database.origenDao()
     }
+
     @Provides
     @Singleton
     fun provideEpisodeDao(database: AppDatabase): EpisodeDao {
         return database.episodeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharacterEpisodeDao(database: AppDatabase): CharacterEpisodeDao {
+        return database.characterEpisodeDao()
     }
 }

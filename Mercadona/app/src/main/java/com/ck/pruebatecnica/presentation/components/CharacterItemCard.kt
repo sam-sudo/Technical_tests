@@ -18,20 +18,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.ck.pruebatecnica.R
+import com.ck.pruebatecnica.domain.model.Character
 
 @Composable
-fun CharacterItemCard(img: String, text: String) {
+fun CharacterItemCard(navController: NavController, character: Character) {
     Card(
         modifier = Modifier
             .height(200.dp)
             .width(100.dp)
             .clip(RoundedCornerShape(8.dp)),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
-
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        onClick = {
+            navController.navigate("characterDetail/${character.id}")
+        }
     ) {
-        DarkImageWithText(img = img, text = text)
+        DarkImageWithText(img = character.image, text = character.name)
     }
 }
 

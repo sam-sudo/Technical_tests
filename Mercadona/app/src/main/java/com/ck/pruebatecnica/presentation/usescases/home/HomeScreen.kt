@@ -67,7 +67,7 @@ fun HomeScreen(
 
         // Sección para descubrir más personajes
         item {
-            DiscoverMoreCharacter(state)
+            DiscoverMoreCharacter(navController,state)
         }
 
         // Sección de personajes en tendencia
@@ -84,7 +84,7 @@ fun HomeScreen(
                     modifier = Modifier.height(300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(state.characterTrendíngList, key = { character -> character.id }) { character ->
+                    items(state.characterTrendíngList, key = { character -> character.character.id }) { character ->
                         CharacterItem(character,navController)
                     }
                 }
@@ -109,7 +109,7 @@ fun HomeScreen(
 
 
 @Composable
-fun DiscoverMoreCharacter(state: HomeViewState) {
+fun DiscoverMoreCharacter(navController: NavController,state: HomeViewState) {
     // Discover More Characters Section
     Text(
         text = "Discover more characters",
@@ -125,7 +125,7 @@ fun DiscoverMoreCharacter(state: HomeViewState) {
         horizontalArrangement = Arrangement.spacedBy(8.dp) // Añade espacio entre los ítems
     ) {
         items(state.characterRandomList) { character ->
-            CharacterItemCard(character.image, character.name)
+            CharacterItemCard(navController,character.character)
         }
     }
 }

@@ -4,16 +4,19 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ck.pruebatecnica.domain.model.Character
+import com.ck.pruebatecnica.domain.model.CharacterWithEpisodes
 import com.ck.pruebatecnica.domain.repository.local.LocalCharacterRepository
 import com.ck.pruebatecnica.domain.repository.remote.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 @HiltViewModel
@@ -69,9 +72,9 @@ class HomeViewModel @Inject constructor(
         Log.e("CharacterViewModel", "loadCharactersFromDB ")
 
         try {
-            val characters = localCharacterRepository.getAllCharacters()
+            val characters = localCharacterRepository.getAllCharactersWithEpisodes()
             _state.update {
-                it.copy(characterList = characters, isLoading = false)
+                it.copy(characterList = characters)
             }
 
             loadRandomCharacters(10) // Asumiendo que esta es otra función suspend
@@ -82,16 +85,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun loadRandomCharacters(maxNum: Int){
-        val randomList = ArrayList<Character>()
-        while (randomList.size < maxNum) {
-            val randomCharacter = _state.value.characterList.random()
-            println("Iteración $randomCharacter")
+    suspend fun loadRandomCharacters(maxNum: Int) {
+        val randomList = ArrayList<CharacterWithEpisodes>()
 
-            if (!randomList.contains(randomCharacter)) {
-                randomList.add(randomCharacter) // Añádelo si no está en la lista
+        try {
+            withTimeout(3000) { // Establece un límite de tiempo de 10 segundos
+                while (randomList.size < maxNum) {
+                    val randomCharacter = _state.value.characterList.random()
+                    println("Iteración $randomCharacter")
+
+                    if (!randomList.contains(randomCharacter)) {
+                        randomList.add(randomCharacter) // Añádelo si no está en la lista
+                    }
+                    delay(100)
+                }
             }
+        } catch (e: TimeoutCancellationException) {
+            // Aquí puedes manejar lo que sucede si se agota el tiempo
+            println("Tiempo agotado. Se han seleccionado ${randomList.size} personajes.")
         }
+
+        // Actualiza el estado con la lista, independientemente de si se completó o se agotó el tiempo
         _state.update {
             it.copy(
                 characterRandomList = randomList
@@ -100,9 +114,16 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadTrendingCharacter(){
+        Log.e("CharacterViewModel", "character trending -> ${_state.value.characterList}")
         val sortedCharacters = _state.value.characterList
-            .filter { character -> character.episodes.size > 5 }
-            .sortedByDescending { character -> character.episodes.size }
+            .filter { character ->
+                if (character.episodes == null){
+                     false
+                }else{
+                    character.episodes.size > 5
+                }
+            }
+            .sortedByDescending { character -> character.episodes?.size }
         _state.update {
             it.copy(
                 characterTrendíngList = sortedCharacters

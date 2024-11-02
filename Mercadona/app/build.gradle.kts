@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.palette.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     kapt(libs.google.dagger.hilt.android.compiler)
     kapt(libs.androidx.room.compiler)

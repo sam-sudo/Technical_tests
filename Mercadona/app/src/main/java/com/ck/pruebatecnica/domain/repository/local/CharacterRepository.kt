@@ -3,7 +3,6 @@ package com.ck.pruebatecnica.domain.repository.local
 import com.ck.pruebatecnica.data.local.entities.CharacterEntity
 import com.ck.pruebatecnica.data.local.entities.LocationEntity
 import com.ck.pruebatecnica.data.local.entities.OriginEntity
-import com.ck.pruebatecnica.data.model.Episode
 import com.ck.pruebatecnica.domain.model.Character
 
 interface CharacterRepository {

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1d71b897db7433032ce4eaa35c6ec688",
+    "identityHash": "0b28c195a04ecb1376bb64071f3f0ad3",
     "entities": [
       {
         "tableName": "characters",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`characterId` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `status` TEXT NOT NULL, `species` TEXT NOT NULL, `type` TEXT NOT NULL, `gender` TEXT NOT NULL, `image` TEXT NOT NULL, `episode` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`characterId` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `status` TEXT NOT NULL, `species` TEXT NOT NULL, `type` TEXT NOT NULL, `gender` TEXT NOT NULL, `image` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "characterId",
@@ -47,12 +47,6 @@
           {
             "fieldPath": "image",
             "columnName": "image",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "episode",
-            "columnName": "episode",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -190,7 +184,7 @@
       },
       {
         "tableName": "episodes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeId` INTEGER PRIMARY KEY AUTOINCREMENT, `air_date` TEXT NOT NULL, `episode` TEXT NOT NULL, `characters` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeId` INTEGER PRIMARY KEY AUTOINCREMENT, `airDate` TEXT NOT NULL, `episode` TEXT NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "episodeId",
@@ -200,19 +194,19 @@
           },
           {
             "fieldPath": "airDate",
-            "columnName": "air_date",
+            "columnName": "airDate",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "episodeName",
+            "fieldPath": "episode",
             "columnName": "episode",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "characters",
-            "columnName": "characters",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -225,12 +219,39 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "CharacterEpisodeCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`characterId` INTEGER NOT NULL, `episodeId` INTEGER NOT NULL, PRIMARY KEY(`characterId`, `episodeId`))",
+        "fields": [
+          {
+            "fieldPath": "characterId",
+            "columnName": "characterId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeId",
+            "columnName": "episodeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "characterId",
+            "episodeId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d71b897db7433032ce4eaa35c6ec688')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0b28c195a04ecb1376bb64071f3f0ad3')"
     ]
   }
 }

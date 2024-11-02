@@ -28,13 +28,16 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.ck.pruebatecnica.R
 import com.ck.pruebatecnica.domain.model.Character
+import com.ck.pruebatecnica.domain.model.CharacterWithEpisodes
 import com.ck.pruebatecnica.presentation.usescases.home.HomeViewState
 
 @Composable
 fun CharacterItem(
-    character: Character,
+    characterWithEpisodes: CharacterWithEpisodes,
     navController: NavController,
 ) {
+    val character = characterWithEpisodes.character
+    val episodes = characterWithEpisodes.episodes
     key(character.id) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -79,7 +82,7 @@ fun CharacterItem(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "${character.episodes.size}",
+                            text = "${episodes.size}",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

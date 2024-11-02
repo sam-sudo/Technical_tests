@@ -75,7 +75,7 @@ fun SearchScreen(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(state.characterList, key = { character -> character.id }) { character ->
+                items(state.characterList, key = { character -> character.character.id }) { character ->
                     CharacterItem(character,navController)
                 }
             }

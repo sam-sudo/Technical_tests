@@ -4,8 +4,11 @@ import com.ck.pruebatecnica.data.local.dao.CharacterDao
 import com.ck.pruebatecnica.data.local.dao.EpisodeDao
 import com.ck.pruebatecnica.data.local.dao.LocationDao
 import com.ck.pruebatecnica.data.local.dao.OriginDao
+import com.ck.pruebatecnica.data.local.dao.crossRef.CharacterEpisodeDao
+import com.ck.pruebatecnica.data.model.Episode
 import com.ck.pruebatecnica.data.repository.remote.rickMortyApi.RemoteCharacterDatasource
 import com.ck.pruebatecnica.data.repository.remote.rickMortyApi.CharacterService
+import com.ck.pruebatecnica.data.repository.remote.rickMortyApi.EpisodeService
 import com.ck.pruebatecnica.domain.repository.remote.CharacterRepository
 import com.ck.pruebatecnica.domain.repository.remote.RemoteCharacterRepository
 import dagger.Module
@@ -30,25 +33,35 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideService(retrofit: Retrofit): CharacterService {
+    fun provideCharacterService(retrofit: Retrofit): CharacterService {
         return retrofit.create(CharacterService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEpisodeService(retrofit: Retrofit): EpisodeService {
+        return retrofit.create(EpisodeService::class.java)
     }
 
     @Singleton
     @Provides
     fun provideCharacterDatasource(
         characterService: CharacterService,
+        episodeService: EpisodeService,
         characterDao: CharacterDao,
         locationDao: LocationDao,
         origenDao: OriginDao,
-        episodeDao: EpisodeDao
+        episodeDao: EpisodeDao,
+        charaEpisodeDao: CharacterEpisodeDao
     ): RemoteCharacterDatasource {
         return RemoteCharacterDatasource(
             characterService,
+            episodeService,
             characterDao,
             locationDao,
             origenDao,
-            episodeDao
+            episodeDao,
+            charaEpisodeDao
         )
     }
 

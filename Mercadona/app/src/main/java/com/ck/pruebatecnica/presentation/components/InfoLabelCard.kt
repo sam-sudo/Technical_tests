@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,20 +19,14 @@ import com.ck.pruebatecnica.ui.theme.typeColors
 @Composable
 fun InfoLabelCard(label: String, info: String, type: String) {
     val cardColor = typeColors[type] ?: Color.LightGray // Color por defecto si no hay coincidencia
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+    Column(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ){
-        Text(
-            text = label + " ->",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.width(20.dp))
         Card(
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = cardColor)
-
+            colors = CardDefaults.cardColors(containerColor = cardColor),
+            modifier = Modifier.padding(8.dp)
         ) {
             Text(
                 text = info,

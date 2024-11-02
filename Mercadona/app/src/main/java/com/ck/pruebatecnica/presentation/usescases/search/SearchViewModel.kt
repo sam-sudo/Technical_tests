@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ck.pruebatecnica.domain.model.Character
+import com.ck.pruebatecnica.domain.model.CharacterWithEpisodes
 import com.ck.pruebatecnica.domain.repository.local.LocalCharacterRepository
 import com.ck.pruebatecnica.domain.repository.remote.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,7 @@ class SearchViewModel @Inject constructor(
     private val _state = MutableStateFlow(SearchViewState())
     val state = _state.asStateFlow()
 
-    var searchList = ArrayList<Character>()
+    var searchList = ArrayList<CharacterWithEpisodes>()
 
     init {
         loadCharactersFromDB()
@@ -35,8 +36,8 @@ class SearchViewModel @Inject constructor(
             Log.e("CharacterViewModel", "loadCharactersFromDB ")
 
             try {
-                val characters = localCharacterRepository.getAllCharacters()
-                searchList = ArrayList<Character>()
+                val characters = localCharacterRepository.getAllCharactersWithEpisodes()
+                searchList = ArrayList<CharacterWithEpisodes>()
                 searchList.addAll(characters)
                 _state.update {
                     it.copy(characterList = characters, isLoading = false)
@@ -53,7 +54,7 @@ class SearchViewModel @Inject constructor(
             Log.e("CharacterViewModel", "loadCharacterByFilter ")
 
             try {
-                val characterFiltered = searchList.filter {it.name.toLowerCase().contains(filterText.toLowerCase())}
+                val characterFiltered = searchList.filter {it.character.name.toLowerCase().contains(filterText.toLowerCase())}
                 _state.update {
                     it.copy(characterList = characterFiltered, isLoading = false)
                 }
@@ -69,8 +70,9 @@ class SearchViewModel @Inject constructor(
             Log.e("CharacterViewModel", "loadCharacterByFilter list $list ")
 
             try {
-                val characterFiltered = searchList.filter { character ->
+                val characterFiltered = searchList.filter { it ->
                     // Filtrar por cualquier propiedad
+                    val character = it.character
                     list.any { filterString ->
                                 character.name.contains(filterString, ignoreCase = true) ||
                                 character.status.contains(filterString, ignoreCase = true) ||
